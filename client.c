@@ -15,13 +15,13 @@ int main() {
     char buffer[BUF_SIZE];
 
     // Création du socket
-    sock = socket(AF_INET, SOCK_STREAM, 0);
+    sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sock < 0) {
         perror("Erreur lors de la création du socket");
         exit(EXIT_FAILURE);
     }
 
-    // Configuration de l'adresse du serveur
+    // Configuration adresse serveur
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(PORT);
@@ -47,7 +47,7 @@ int main() {
     buffer[n] = '\0';
     printf("%s", buffer);
 
-    // Lire le pseudo depuis stdin et l'envoyer
+    // Lecture du pseudo depuis stdin et envoi
     if (fgets(buffer, BUF_SIZE, stdin) == NULL) {
         printf("Erreur lecture pseudo\n");
         close(sock);
@@ -55,18 +55,18 @@ int main() {
     }
     send(sock, buffer, strlen(buffer), 0);
 
-    // Réception du message de bienvenue
+    // Réception message de bienvenue
     n = recv(sock, buffer, BUF_SIZE - 1, 0);
     if (n > 0) {
         buffer[n] = '\0';
         printf("%s", buffer);
     }
 
-    // Préparer poll sur stdin et socket
+    // Préparation de poll pour stdin et socket
     struct pollfd fds[2];
-    fds[0].fd = STDIN_FILENO;
+    fds[0].fd = STDIN_FILENO; // Entrée clavier
     fds[0].events = POLLIN;
-    fds[1].fd = sock;
+    fds[1].fd = sock;         // Socket réseau
     fds[1].events = POLLIN;
 
     printf("Tapez vos messages ('exit' pour quitter) :\n");
@@ -78,8 +78,10 @@ int main() {
             break;
         }
 
+        // Saisie utilisateur
         if (fds[0].revents & POLLIN) {
-            if (fgets(buffer, BUF_SIZE, stdin) == NULL) break;
+            if (fgets(buffer, BUF_SIZE, stdin) == NULL)
+                break;
 
             if (strncmp(buffer, "exit", 4) == 0) {
                 printf("Déconnexion demandée.\n");
@@ -89,6 +91,7 @@ int main() {
             send(sock, buffer, strlen(buffer), 0);
         }
 
+        // Message serveur
         if (fds[1].revents & POLLIN) {
             int len = recv(sock, buffer, BUF_SIZE - 1, 0);
             if (len <= 0) {
