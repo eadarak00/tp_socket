@@ -20,12 +20,12 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    // // -> creation de l'adresse du serveur socket = addresse IP et Port TCP
-    // struct sockaddr_in serv_addr;
-    // memset(&serv_addr, 0, sizeof(serv_addr));
-    // serv_addr.sin_family = AF_INET;
-    // serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    // serv_addr.sin_port = htons(PORT);
+    // -> creation de l'adresse du serveur socket = addresse IP et Port TCP
+    struct sockaddr_in serv_addr;
+    memset(&serv_addr, 0, sizeof(serv_addr));
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    serv_addr.sin_port = htons(PORT);
 
     // // -> associer l'adresse IP + Port TCP au socket
     // if (bind(serv_socket, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
