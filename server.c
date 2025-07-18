@@ -34,11 +34,11 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    // // -> Demander l'autorisation au systeme d'ecouter des connexions
-    // int MAXCONNEXION = 10;
-    // if(listen(serv_socket, MAXCONNEXION) < 0){
-    //     perror("Erreur listen()\n");
-    //     exit(EXIT_FAILURE);
-    // }
+    // -> Demander l'autorisation au systeme d'ecouter des connexions
+    int MAXCONNEXION = 10;
+    if(listen(serv_socket, MAXCONNEXION) < 0){
+        perror("Erreur listen()\n");
+        exit(EXIT_FAILURE);
+    }
     
 }
