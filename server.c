@@ -27,12 +27,12 @@ int main()
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     serv_addr.sin_port = htons(PORT);
 
-    // // -> associer l'adresse IP + Port TCP au socket
-    // if (bind(serv_socket, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
-    // {
-    //     perror("Échec du bind()");
-    //     exit(EXIT_FAILURE);
-    // }
+    // -> associer l'adresse IP + Port TCP au socket
+    if (bind(serv_socket, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    {
+        perror("Échec du bind()");
+        exit(EXIT_FAILURE);
+    }
 
     // // -> Demander l'autorisation au systeme d'ecouter des connexions
     // int MAXCONNEXION = 10;
